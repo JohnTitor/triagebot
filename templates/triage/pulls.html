@@ -38,10 +38,18 @@
                 border-radius:2;
             }
         </style>
+        <script type="text/javascript">
+            function hideDrafts( checkBox ) {
+                checkBox.checked ?
+                document.getElementById("draft").style.display = "none" :
+                document.getElementById("draft").removeAttribute("style")
+            }
+        </script>
     </head>
 
     <body>
         <h1>Triage dashboard - <a href="https://github.com/{{ owner }}/{{ repo }}">{{ owner }}/{{ repo }}</a></h1>
+        <input type="checkbox" onclick="hideDrafts(this)">Hide draft PRs
         <table>
             <thead>
                 <tr>
@@ -57,7 +65,7 @@
             </thead>
             <tbody>
                 {% for pull in pulls %}
-                    <tr>
+                    <tr {% if pull.draft %} id='draft' {% endif %}>
                         <td><a href="{{ pull.html_url }}">{{ pull.number }}</a></td>
                         <td class='dot need-triage-{{ pull.need_triage }}'>{{ pull.days_from_last_updated_at }} {% if pull.days_from_last_updated_at > 1 %}days{% else %}day{% endif %}</td>
                         <td>{% if pull.wait_for_author %}<b>{{ pull.author }}</b>{% elif pull.wait_for_review %}<b>{{ pull.assignee }}</b>{% endif %}</td>

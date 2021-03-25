@@ -84,6 +84,7 @@ pub async fn pulls(
         let number = base_pull.number;
         let title = base_pull.title;
         let author = base_pull.user.login;
+        let draft = base_pull.draft;
 
         let pull = PullRequest {
             html_url,
@@ -97,6 +98,7 @@ pub async fn pulls(
             wait_for_author,
             wait_for_review,
             days_from_last_updated_at,
+            draft,
         };
         pulls.push(to_value(pull).unwrap());
     }
@@ -129,4 +131,5 @@ struct PullRequest {
     pub wait_for_author: bool,
     pub wait_for_review: bool,
     pub days_from_last_updated_at: i64,
+    pub draft: bool,
 }
